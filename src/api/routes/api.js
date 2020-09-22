@@ -1,9 +1,9 @@
 const router = require('express').Router();
 
-router.get('/status', (req, res) => 
+router.get('/', (req, res) => {
+
     res.json({
         status: 'ok'
     })
-)
-
+})
 module.exports = router

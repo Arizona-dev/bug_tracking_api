@@ -3,6 +3,25 @@ const app = express()
 require('dotenv').config()
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const { Sequelize } = require('sequelize')
+
+const sequelize = new Sequelize('bug_tracking', 'root', '', {
+    host: 'localhost',
+    dialect: 'mysql'
+});
+
+const connectDatabase = async() => {
+    try {
+        await sequelize.authenticate()
+            .then(() => {
+                console.log('Connection has been established successfully.');
+            })
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+    }
+}
+
+connectDatabase()
 
 
 var corsOptions = {
@@ -19,11 +38,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const apiStatus = require('./api/routes/api')
 
 // Route Middlewares
-app.use('/api/', apiStatus)
+app.use('/', apiStatus)
 
 // Application Setup
 var server = app.listen(process.env.PORT, function() {
-    console.log('Server listening to http://localhost:'+process.env.PORT);
+    console.log('Server listening to http://localhost:' + process.env.PORT);
 })
 
 // Serving static files
